@@ -1,7 +1,7 @@
-[gd_scene load_steps=187 format=3 uid="uid://cadankj8ip6yo"]
+[gd_scene load_steps=183 format=3 uid="uid://cadankj8ip6yo"]
 
 [ext_resource type="Texture2D" uid="uid://bhnrl2gryq4k0" path="res://assets/sprites/stag/critter_stag_NE_idle.png" id="1_ikrob"]
-[ext_resource type="Script" path="res://src/creatures/stag.gd" id="1_ndaq2"]
+[ext_resource type="PackedScene" uid="uid://8f67uvyca4xh" path="res://scenes/creatures/creature.tscn" id="1_ksg36"]
 [ext_resource type="Texture2D" uid="uid://bvt1hs4ft06tu" path="res://assets/sprites/stag/critter_stag_NW_idle.png" id="2_ga2av"]
 [ext_resource type="Texture2D" uid="uid://bvvfbgcg0dof1" path="res://assets/sprites/stag/critter_stag_SE_idle.png" id="3_n5v3e"]
 [ext_resource type="Texture2D" uid="uid://b0jwajbcqp75e" path="res://assets/sprites/stag/critter_stag_SW_idle.png" id="4_2pbbn"]
@@ -13,9 +13,6 @@
 [ext_resource type="Texture2D" uid="uid://drs2r8au2adg1" path="res://assets/sprites/stag/critter_stag_NW_walk.png" id="10_408dv"]
 [ext_resource type="Texture2D" uid="uid://dys6ey7r0ri1s" path="res://assets/sprites/stag/critter_stag_SE_walk.png" id="11_pg2qv"]
 [ext_resource type="Texture2D" uid="uid://c52wb2n8jl615" path="res://assets/sprites/stag/critter_stag_SW_walk.png" id="12_w0a5t"]
-[ext_resource type="Script" path="res://src/fsm/fsm.gd" id="13_vjvuu"]
-[ext_resource type="Script" path="res://src/creatures/stag/stag_wander.gd" id="14_b2bjo"]
-[ext_resource type="Script" path="res://src/creatures/stag/stag_idle.gd" id="15_vbns4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ph3nv"]
 atlas = ExtResource("1_ikrob")
@@ -689,7 +686,7 @@ region = Rect2(288, 0, 32, 41)
 atlas = ExtResource("12_w0a5t")
 region = Rect2(320, 0, 32, 41)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_qvhll"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_7y1ei"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -1256,45 +1253,21 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_jhuwe"]
-radius = 6.0
+[node name="Stag" groups=["prey"] instance=ExtResource("1_ksg36")]
 
-[node name="Stag" type="CharacterBody2D" groups=["prey"]]
-texture_filter = 1
-collision_mask = 2
-motion_mode = 1
-wall_min_slide_angle = 0.0
-script = ExtResource("1_ndaq2")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_qvhll")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_7y1ei")
 animation = &"idle_ne"
 autoplay = "idle_ne"
-frame_progress = 0.198032
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 4)
-shape = SubResource("CircleShape2D_jhuwe")
-
-[node name="FSM" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
-script = ExtResource("13_vjvuu")
+[node name="FSM" parent="." index="2" node_paths=PackedStringArray("initial_state")]
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="FSM" node_paths=PackedStringArray("agent", "animator")]
-script = ExtResource("15_vbns4")
+[node name="Idle" parent="FSM" index="0" node_paths=PackedStringArray("agent", "animator")]
 agent = NodePath("../..")
 animator = NodePath("../../AnimatedSprite2D")
 
-[node name="Wander" type="Node" parent="FSM" node_paths=PackedStringArray("agent", "animator", "navigation")]
-script = ExtResource("14_b2bjo")
+[node name="Wander" parent="FSM" index="1" node_paths=PackedStringArray("agent", "animator", "navigation")]
 agent = NodePath("../..")
 animator = NodePath("../../AnimatedSprite2D")
 navigation = NodePath("../../NavigationAgent2D")
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 3.0
-autostart = true
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
