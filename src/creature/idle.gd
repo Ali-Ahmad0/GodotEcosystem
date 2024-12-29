@@ -4,30 +4,27 @@ extends State
 @export var agent : Creature
 @export var animator : AnimatedSprite2D
 
-var prev_direction
-
 func enter() -> void:
-	prev_direction = agent.direction
 	animate()
 
 func update(delta: float) -> void:
-	if prev_direction != agent.direction:
-		animate()
-		prev_direction = agent.direction
-		
+	animate()
+	
+	# Exit the state
 	if agent.current_state != self.name.to_lower():
 		emit_signal("state_transition", self, agent.current_state)
 		
 func animate() -> void:
+	# Animate the creature
 	match agent.direction:
-		agent.Direction.NE:
+		Direction.NE:
 			animator.play("idle_ne")
 			
-		agent.Direction.NW:
+		Direction.NW:
 			animator.play("idle_nw")
 			
-		agent.Direction.SE:
+		Direction.SE:
 			animator.play("idle_se")
 			
-		agent.Direction.SW:
+		Direction.SW:
 			animator.play("idle_sw")

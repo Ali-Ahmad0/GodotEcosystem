@@ -1,16 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://8f67uvyca4xh"]
+[gd_scene load_steps=9 format=3 uid="uid://8f67uvyca4xh"]
 
-[ext_resource type="Script" path="res://src/creatures/creature.gd" id="1_raejy"]
+[ext_resource type="Script" path="res://src/creature/creature.gd" id="1_raejy"]
 [ext_resource type="Script" path="res://src/fsm/fsm.gd" id="2_lgpwl"]
-[ext_resource type="Script" path="res://src/creatures/creature/idle.gd" id="3_71s5r"]
-[ext_resource type="Script" path="res://src/creatures/creature/wander.gd" id="4_be54a"]
+[ext_resource type="Script" path="res://src/creature/idle.gd" id="3_71s5r"]
+[ext_resource type="Script" path="res://src/creature/wander.gd" id="4_be54a"]
+[ext_resource type="Script" path="res://src/creature/chase.gd" id="5_ykpoe"]
+[ext_resource type="Script" path="res://src/creature/mate.gd" id="6_d01by"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fcg34"]
 radius = 6.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_pii6b"]
+radius = 96.0
+
 [node name="Creature" type="CharacterBody2D"]
 texture_filter = 1
-collision_mask = 2
 script = ExtResource("1_raejy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -26,10 +30,33 @@ script = ExtResource("3_71s5r")
 [node name="Wander" type="Node" parent="FSM"]
 script = ExtResource("4_be54a")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Chase" type="Node" parent="FSM"]
+script = ExtResource("5_ykpoe")
+
+[node name="Mate" type="Node" parent="FSM"]
+script = ExtResource("6_d01by")
+
+[node name="HungerTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="StateTimer" type="Timer" parent="."]
 wait_time = 3.0
 autostart = true
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="Timer" type="Timer" parent="NavigationAgent2D"]
+wait_time = 0.5
+autostart = true
+
+[node name="Vision" type="Area2D" parent="."]
+position = Vector2(0, 4)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Vision"]
+shape = SubResource("CircleShape2D_pii6b")
+debug_color = Color(0.0400905, 0.624165, 0.52247, 0.42)
+
+[connection signal="timeout" from="HungerTimer" to="." method="_on_hunger_timer_timeout"]
+[connection signal="timeout" from="StateTimer" to="." method="_on_state_timer_timeout"]
+[connection signal="timeout" from="NavigationAgent2D/Timer" to="FSM/Chase" method="_on_timer_timeout"]
+[connection signal="area_entered" from="Vision" to="." method="_on_vision_area_entered"]

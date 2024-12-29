@@ -1,31 +1,22 @@
 extends Sprite2D
 
+@onready var target_collision : CollisionShape2D = $Area2D/CollisionShape2D
 @onready var timer : Timer = $Timer
-@onready var area_collision : CollisionShape2D = $Area2D/CollisionShape2D
+@onready var animation : AnimationPlayer = $AnimationPlayer
 
 func _ready() -> void:
-	# Hide the grass initially
-	visible = false
-	area_collision.disabled = true
-	
-	# Randomized grow time
+	# Set wait time
 	timer.wait_time = randi_range(10, 20)
-
+	timer.start()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	# Grass has now been eaten
 	if body.is_in_group("prey"):
-		visible = false
-		area_collision.disabled = true
-	
-		# Randomize grow time
-		timer.wait_time = randi_range(10, 20)
-		 
-		# Start the grow timer
+		animation.play_backwards("grow")
 		timer.start()
-
+		
+		body.current_state = "idle"
+		body.target = null
 
 func _on_timer_timeout() -> void:
-	# Grass has grown
-	visible = true
-	area_collision.disabled = false
+	animation.play("grow")

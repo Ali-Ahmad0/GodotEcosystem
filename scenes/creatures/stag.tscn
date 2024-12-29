@@ -1,4 +1,4 @@
-[gd_scene load_steps=183 format=3 uid="uid://cadankj8ip6yo"]
+[gd_scene load_steps=185 format=3 uid="uid://cadankj8ip6yo"]
 
 [ext_resource type="Texture2D" uid="uid://bhnrl2gryq4k0" path="res://assets/sprites/stag/critter_stag_NE_idle.png" id="1_ikrob"]
 [ext_resource type="PackedScene" uid="uid://8f67uvyca4xh" path="res://scenes/creatures/creature.tscn" id="1_ksg36"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://drs2r8au2adg1" path="res://assets/sprites/stag/critter_stag_NW_walk.png" id="10_408dv"]
 [ext_resource type="Texture2D" uid="uid://dys6ey7r0ri1s" path="res://assets/sprites/stag/critter_stag_SE_walk.png" id="11_pg2qv"]
 [ext_resource type="Texture2D" uid="uid://c52wb2n8jl615" path="res://assets/sprites/stag/critter_stag_SW_walk.png" id="12_w0a5t"]
+[ext_resource type="Script" path="res://scenes/creatures/stag_area.gd" id="14_hulhx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ph3nv"]
 atlas = ExtResource("1_ikrob")
@@ -1253,7 +1254,12 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_uldep"]
+radius = 12.0
+
 [node name="Stag" groups=["prey"] instance=ExtResource("1_ksg36")]
+collision_layer = 2
+collision_mask = 4
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="0"]
 sprite_frames = SubResource("SpriteFrames_7y1ei")
@@ -1271,3 +1277,23 @@ animator = NodePath("../../AnimatedSprite2D")
 agent = NodePath("../..")
 animator = NodePath("../../AnimatedSprite2D")
 navigation = NodePath("../../NavigationAgent2D")
+
+[node name="Chase" parent="FSM" index="2" node_paths=PackedStringArray("agent", "animator", "navigation")]
+agent = NodePath("../..")
+animator = NodePath("../../AnimatedSprite2D")
+navigation = NodePath("../../NavigationAgent2D")
+
+[node name="Target" type="Area2D" parent="." index="6"]
+position = Vector2(0, 4)
+collision_layer = 2
+script = ExtResource("14_hulhx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Target" index="0"]
+shape = SubResource("CircleShape2D_uldep")
+debug_color = Color(0.733543, 0.443156, 0.437629, 0.42)
+
+[node name="Vision" parent="." index="7"]
+collision_layer = 2
+collision_mask = 4
+
+[connection signal="body_entered" from="Target" to="Target" method="_on_body_entered"]
