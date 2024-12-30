@@ -5,7 +5,7 @@ extends CharacterBody2D
 var speed : float = 25
 var max_hunger : float = 100
 
-var mating_urge : int = 100
+var mating_urge : int = 0
 
 @export var facing : String
 
@@ -114,16 +114,17 @@ func _on_vision_area_entered(area: Area2D) -> void:
 			if !(mating_urge >= 100 and target.mating_urge >= 100):
 				target = null; return
 				
-			print(name + " has found suitable mate")
 			current_state = "mate"
 		
 	# Area belongs to the species' food group
 	elif area.is_in_group(food_group.to_lower()):
 		target = area.get_parent()
+		if !(is_normal_state()):
+			target = null; return
+		
 		current_state = "chase"
 		
-# Hunger
+# Increment/Decrement statistics
 func _on_hunger_timer_timeout() -> void:
-	#hunger -= 0.5 if current_state == "idle" else 1
-	#mating_urge += 1
-	pass
+	hunger -= 0.5 if current_state == "idle" else 1
+	mating_urge += 1

@@ -19,6 +19,9 @@ func update(delta : float) -> void:
 	animate()
 	agent.move_and_slide()
 	
+	if !agent.target:
+		agent.current_state = "idle"
+	
 	# Target has already been eaten
 	if agent.target:
 		if agent.target.target_collision.disabled:

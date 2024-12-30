@@ -30,8 +30,21 @@ func update(delta: float) -> void:
 func leave() -> void:
 	# Mating urge resets
 	agent.mating_urge = 0
-	print("Mating done")
 	
+	# Preload the creature scene for creating a new instance
+	var creature_type : String = get_parent().get_parent().get_groups()[0]
+	var creature_scene : PackedScene
+	if creature_type == "prey":
+		creature_scene = load("res://scenes/creatures/stag.tscn")
+	else:
+		creature_scene = load("res://scenes/creatures/wolf.tscn")
+
+	# Create an instance of offspring
+	var offspring : CharacterBody2D = creature_scene.instantiate()
+	if offspring:
+		# Spawn a new offspring at the position of parent
+		offspring.global_position = agent.global_position
+		get_parent().get_parent().get_parent().add_child(offspring)
 	
 func animate() -> void:
 	# Animate the creature
@@ -49,7 +62,7 @@ func animate() -> void:
 
 func makepath() -> void:
 	# Create a path to the target
-	if agent.target:
+	if agent and agent.target:
 		navigation.target_position = agent.target.global_position
 
 func _on_timer_timeout() -> void:
