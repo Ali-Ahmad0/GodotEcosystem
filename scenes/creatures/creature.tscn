@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://8f67uvyca4xh"]
+[gd_scene load_steps=10 format=3 uid="uid://8f67uvyca4xh"]
 
 [ext_resource type="Script" path="res://src/creature/creature.gd" id="1_raejy"]
 [ext_resource type="Script" path="res://src/fsm/fsm.gd" id="2_lgpwl"]
+[ext_resource type="FontFile" uid="uid://hjmyblnt7bki" path="res://assets/fonts/Abaddon Bold.ttf" id="2_wv8oy"]
 [ext_resource type="Script" path="res://src/creature/idle.gd" id="3_71s5r"]
 [ext_resource type="Script" path="res://src/creature/wander.gd" id="4_be54a"]
 [ext_resource type="Script" path="res://src/creature/chase.gd" id="5_ykpoe"]
@@ -16,6 +17,47 @@ radius = 96.0
 [node name="Creature" type="CharacterBody2D"]
 texture_filter = 1
 script = ExtResource("1_raejy")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CreatureStats" type="Control" parent="CanvasLayer"]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 0
+offset_left = 480.0
+offset_top = 4.0
+offset_right = 640.0
+offset_bottom = 68.0
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/CreatureStats"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 18.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_wv8oy")
+text = "Current State: "
+
+[node name="Label2" type="Label" parent="CanvasLayer/CreatureStats"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 18.0
+offset_bottom = 36.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_wv8oy")
+text = "Hunger: "
+
+[node name="Label3" type="Label" parent="CanvasLayer/CreatureStats"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 36.0
+offset_bottom = 54.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_wv8oy")
+text = "Mating Urge: "
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 4)

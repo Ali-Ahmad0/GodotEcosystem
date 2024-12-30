@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://cdgd252wttjqa"]
+
+[ext_resource type="FontFile" uid="uid://hjmyblnt7bki" path="res://assets/fonts/Abaddon Bold.ttf" id="1_psi07"]
+
+[node name="CreatureStats" type="Control"]
+visible = false
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 0
+offset_left = 439.0
+offset_top = 4.0
+offset_right = 640.0
+offset_bottom = 73.0
+
+[node name="State" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 18.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_psi07")
+theme_override_font_sizes/font_size = 16
+text = "Current State: "
+
+[node name="Hunger" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 18.0
+offset_bottom = 36.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_psi07")
+text = "Hunger:  "
+
+[node name="Mating" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 36.0
+offset_bottom = 54.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_psi07")
+text = "Mating Urge: "

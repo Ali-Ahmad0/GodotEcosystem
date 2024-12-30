@@ -33,7 +33,7 @@ func update(delta : float) -> void:
 
 func leave() -> void:
 	# Replenish creature hunger
-	agent.hunger += 10
+	agent.hunger += randi_range(5, 15)
 
 func animate() -> void:
 	# Animate the creature

@@ -27,25 +27,6 @@ func update(delta: float) -> void:
 	if agent.current_state != self.name.to_lower():
 		emit_signal("state_transition", self, agent.current_state)
 	
-func leave() -> void:
-	# Mating urge resets
-	agent.mating_urge = 0
-	
-	# Preload the creature scene for creating a new instance
-	var creature_type : String = get_parent().get_parent().get_groups()[0]
-	var creature_scene : PackedScene
-	if creature_type == "prey":
-		creature_scene = load("res://scenes/creatures/stag.tscn")
-	else:
-		creature_scene = load("res://scenes/creatures/wolf.tscn")
-
-	# Create an instance of offspring
-	var offspring : CharacterBody2D = creature_scene.instantiate()
-	if offspring:
-		# Spawn a new offspring at the position of parent
-		offspring.global_position = agent.global_position
-		get_parent().get_parent().get_parent().add_child(offspring)
-	
 func animate() -> void:
 	# Animate the creature
 	if direction.x > 0 and direction.y < 0:

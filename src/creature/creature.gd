@@ -2,15 +2,16 @@ class_name Creature
 extends CharacterBody2D
 
 # Properties
-var speed : float = 25
-var max_hunger : float = 100
+var speed : float
+var max_hunger : float
 
-var mating_urge : int = 0
+var mating_urge : float
 
 @export var facing : String
 
 @onready var state_timer : Timer = $StateTimer
 @onready var target_collision : CollisionShape2D = $Target/CollisionShape2D
+@onready var vision : Area2D = $Vision
 @onready var vision_collision : CollisionShape2D = $Vision/CollisionShape2D
 
 var food_group : String = ""
@@ -26,9 +27,12 @@ var current_state = "idle"
 var target : Node2D = null 
 var hunger : float
 
+
 func _ready() -> void:
+	mating_urge = 0
+	
 	# Initialize the properties randomly
-	max_hunger = randi_range(60, 120)
+	max_hunger = randi_range(80, 120)
 	hunger = max_hunger
 	speed = randi_range(20, 40)
 	
@@ -63,19 +67,49 @@ func _ready() -> void:
 	elif get_groups()[0].to_lower() == "prey":
 		food_group = "foliage"
 		predator_group = "predator"
-	
+
+
 func _process(delta: float) -> void:
-	hunger = clampf(hunger, 0, max_hunger)
-	mating_urge = clampi(mating_urge, 0, 100)
+	hunger = clamp(hunger, 0, max_hunger)
+	mating_urge = clamp(mating_urge, 0, 100)
 
 	# Die when hunger reaches 0
 	if hunger <= 0:
 		queue_free()
-	
+		
+	handle_vision()
+
+
 # Is in a normal state
 func is_normal_state() -> bool:
 	return current_state == "idle" or current_state == "wander"
-	
+
+
+# Look for potential food or mate
+func handle_vision() -> void:
+	for area in vision.get_overlapping_areas():
+		if !is_normal_state() or area.get_parent() == self:
+			continue
+			
+		# Area belongs to creature of same species
+		if area.is_in_group(self.get_groups()[0]):
+				target = area.get_parent()
+		
+				# One of the 2 creatures is not ready to mate
+				if !target.is_normal_state():
+					target = null; continue
+				
+				if !(mating_urge >= 100 and target.mating_urge >= 100):
+					target = null; continue
+				
+				current_state = "mate"; continue
+			
+		# Area belongs to the species' food group
+		elif area.is_in_group(food_group.to_lower()):
+			target = area.get_parent()
+			current_state = "chase"; continue
+
+
 func _on_state_timer_timeout() -> void:
 	# Randomly set state change time
 	state_timer.wait_time = randf_range(2.0, 4.0)
@@ -96,35 +130,23 @@ func _on_state_timer_timeout() -> void:
 			pass
 	
 	# Randomly switch between idle and wander
-	var rand_val = randf()
+	var rand_val : float = randf()
 	if rand_val < 0.5 and is_normal_state():
 		current_state = "wander" if current_state == "idle" else "idle"
 
-# Food or mate found
-func _on_vision_area_entered(area: Area2D) -> void:
-	# Area belongs to creature of same species
-	if area.is_in_group(self.get_groups()[0]) and area.get_parent() != self:
-			target = area.get_parent()
-			
-			# One of the 2 creatures is not ready to mate
-			if !(is_normal_state() and target.is_normal_state()):
-				target = null; return
-			
-			# Both creatures have maximum mating urge
-			if !(mating_urge >= 100 and target.mating_urge >= 100):
-				target = null; return
-				
-			current_state = "mate"
-		
-	# Area belongs to the species' food group
-	elif area.is_in_group(food_group.to_lower()):
-		target = area.get_parent()
-		if !(is_normal_state()):
-			target = null; return
-		
-		current_state = "chase"
-		
+
 # Increment/Decrement statistics
 func _on_hunger_timer_timeout() -> void:
-	hunger -= 0.5 if current_state == "idle" else 1
-	mating_urge += 1
+	# Decrement hunger based on activity
+	hunger -= 1 if current_state == "idle" else 1.5
+	
+	# Randomly increment one's mating urge
+	var rand_val : float = randf()
+	if rand_val < 0.4:
+		mating_urge += 0.5
+		
+	elif rand_val > 0.8:
+		mating_urge += 1.5
+		
+	else:
+		mating_urge += 1
