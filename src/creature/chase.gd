@@ -28,6 +28,10 @@ func update(delta : float) -> void:
 	if agent.current_state != self.name.to_lower():
 		emit_signal("state_transition", self, agent.current_state)
 
+func leave() -> void:
+	# Replenish creature hunger
+	agent.hunger += 10
+
 func animate() -> void:
 	# Animate the creature
 	if direction.x > 0 and direction.y < 0:
@@ -41,10 +45,6 @@ func animate() -> void:
 		
 	if direction.x < 0 and direction.y > 0:
 		animator.play("run_sw")
-
-func leave() -> void:
-	# Replenish creature hunger
-	agent.hunger += 10
 	
 func makepath() -> void:
 	# Create a path to the target

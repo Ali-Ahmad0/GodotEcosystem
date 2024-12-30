@@ -1283,9 +1283,15 @@ agent = NodePath("../..")
 animator = NodePath("../../AnimatedSprite2D")
 navigation = NodePath("../../NavigationAgent2D")
 
-[node name="Target" type="Area2D" parent="." index="6"]
+[node name="Mate" parent="FSM" index="3" node_paths=PackedStringArray("agent", "animator", "navigation")]
+agent = NodePath("../..")
+animator = NodePath("../../AnimatedSprite2D")
+navigation = NodePath("../../NavigationAgent2D")
+
+[node name="Target" type="Area2D" parent="." index="6" groups=["prey"]]
 position = Vector2(0, 4)
-collision_layer = 2
+collision_layer = 4
+collision_mask = 3
 script = ExtResource("14_hulhx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Target" index="0"]

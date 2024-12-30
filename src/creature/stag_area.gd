@@ -6,3 +6,7 @@ func _on_body_entered(body: Node2D) -> void:
 		body.current_state = "idle"
 		body.target = null
 		get_parent().queue_free()
+	
+	if body.is_in_group("prey") and body.current_state == "mate":
+		body.current_state = "idle"
+		body.target = null

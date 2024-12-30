@@ -408,5 +408,5 @@ agent = NodePath("../..")
 animator = NodePath("../../AnimatedSprite2D")
 navigation = NodePath("../../NavigationAgent2D")
 
-[node name="Vision" parent="." index="5"]
-collision_mask = 2
+[node name="Vision" parent="." index="6"]
+collision_mask = 4

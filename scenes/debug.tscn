@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=4 uid="uid://bxdoh4okpr445"]
+[gd_scene load_steps=4 format=4 uid="uid://bxdoh4okpr445"]
 
 [ext_resource type="PackedScene" uid="uid://0vrd28vnd68c" path="res://scenes/world/tilemap.tscn" id="1_e2sem"]
 [ext_resource type="Script" path="res://src/world/camera.gd" id="1_f86x4"]
 [ext_resource type="PackedScene" uid="uid://cadankj8ip6yo" path="res://scenes/creatures/stag.tscn" id="3_7htvl"]
-[ext_resource type="PackedScene" uid="uid://baot6ig6tr88h" path="res://scenes/world/grass.tscn" id="3_u58vx"]
 
 [node name="Debug" type="Node2D"]
 texture_filter = 1
@@ -34,42 +33,18 @@ tile_map_data = PackedByteArray("AAD//wEAAAAHAAMAAAAAAAIAAAAHAAMAAAAAAAMAAAAHAAM
 
 [node name="Grass" type="Node2D" parent="."]
 
-[node name="Grass1" parent="Grass" instance=ExtResource("3_u58vx")]
-position = Vector2(32, 24)
-
-[node name="Area2D" parent="Grass/Grass1" index="0"]
-collision_mask = 2
-
-[node name="Grass2" parent="Grass" instance=ExtResource("3_u58vx")]
-position = Vector2(160, 8)
-
-[node name="Area2D" parent="Grass/Grass2" index="0"]
-collision_mask = 2
-
-[node name="Grass3" parent="Grass" instance=ExtResource("3_u58vx")]
-position = Vector2(128, -56)
-
-[node name="Area2D" parent="Grass/Grass3" index="0"]
-collision_mask = 2
-
 [node name="Stags" type="Node2D" parent="."]
 texture_filter = 1
 
 [node name="Stag1" parent="Stags" instance=ExtResource("3_7htvl")]
-position = Vector2(212, 12)
-facing = "NE"
-
-[node name="Stag2" parent="Stags" instance=ExtResource("3_7htvl")]
 position = Vector2(82, 75)
 facing = "NE"
 
-[node name="Stag3" parent="Stags" instance=ExtResource("3_7htvl")]
+[node name="Stag2" parent="Stags" instance=ExtResource("3_7htvl")]
 position = Vector2(82, -38)
 facing = "NE"
 
 [node name="Wolfs" type="Node2D" parent="."]
 
 [editable path="Tilemap"]
-[editable path="Grass/Grass1"]
-[editable path="Grass/Grass2"]
-[editable path="Grass/Grass3"]
+[editable path="Stags/Stag1"]
