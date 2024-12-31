@@ -1,8 +1,9 @@
-[gd_scene load_steps=53 format=3 uid="uid://c0q1jjmgx106c"]
+[gd_scene load_steps=55 format=3 uid="uid://c0q1jjmgx106c"]
 
 [ext_resource type="Texture2D" uid="uid://cop2yxbtq48xm" path="res://assets/sprites/wolf/wolf-idle.png" id="1_0f1n1"]
 [ext_resource type="PackedScene" uid="uid://8f67uvyca4xh" path="res://scenes/creatures/creature.tscn" id="1_recoa"]
 [ext_resource type="Texture2D" uid="uid://b050e6gkver04" path="res://assets/sprites/wolf/wolf-run.png" id="2_j46el"]
+[ext_resource type="Script" path="res://src/creature/target.gd" id="4_4gw3h"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fnokr"]
 atlas = ExtResource("1_0f1n1")
@@ -383,6 +384,9 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_bjn8v"]
+radius = 12.0
+
 [node name="Wolf" groups=["predator"] instance=ExtResource("1_recoa")]
 collision_mask = 2
 
@@ -391,7 +395,7 @@ sprite_frames = SubResource("SpriteFrames_67xkm")
 animation = &"idle_ne"
 autoplay = "idle_ne"
 
-[node name="FSM" parent="." index="2" node_paths=PackedStringArray("initial_state")]
+[node name="FSM" parent="." index="3" node_paths=PackedStringArray("initial_state")]
 initial_state = NodePath("Idle")
 
 [node name="Idle" parent="FSM" index="0" node_paths=PackedStringArray("agent", "animator")]
@@ -408,5 +412,27 @@ agent = NodePath("../..")
 animator = NodePath("../../AnimatedSprite2D")
 navigation = NodePath("../../NavigationAgent2D")
 
-[node name="Vision" parent="." index="6"]
-collision_mask = 4
+[node name="Mate" parent="FSM" index="3" node_paths=PackedStringArray("agent", "animator", "navigation")]
+agent = NodePath("../..")
+animator = NodePath("../../AnimatedSprite2D")
+navigation = NodePath("../../NavigationAgent2D")
+
+[node name="Target" type="Area2D" parent="." index="7" node_paths=PackedStringArray("stats_debug", "state_label", "hunger_label", "mating_label") groups=["predator"]]
+position = Vector2(0, 4)
+collision_mask = 3
+script = ExtResource("4_4gw3h")
+stats_debug = NodePath("../CanvasLayer/CreatureStats")
+state_label = NodePath("../CanvasLayer/CreatureStats/Label")
+hunger_label = NodePath("../CanvasLayer/CreatureStats/Label2")
+mating_label = NodePath("../CanvasLayer/CreatureStats/Label3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Target" index="0"]
+shape = SubResource("CircleShape2D_bjn8v")
+debug_color = Color(0.885577, 0.309727, 0.316288, 0.42)
+
+[node name="Vision" parent="." index="8"]
+collision_mask = 3
+
+[connection signal="body_entered" from="Target" to="Target" method="_on_body_entered"]
+[connection signal="mouse_entered" from="Target" to="Target" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Target" to="Target" method="_on_mouse_exited"]

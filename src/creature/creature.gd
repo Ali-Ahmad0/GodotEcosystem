@@ -24,7 +24,9 @@ var direction : Vector2
 var current_state = "idle"
 
 # Food target
-var target : Node2D = null 
+var target : Node2D = null
+var threat : Node2D = null
+
 var hunger : float
 
 
@@ -93,17 +95,22 @@ func handle_vision() -> void:
 			
 		# Area belongs to creature of same species
 		if area.is_in_group(self.get_groups()[0]):
-				target = area.get_parent()
+			target = area.get_parent()
 		
-				# One of the 2 creatures is not ready to mate
-				if !target.is_normal_state():
-					target = null; continue
+			# One of the 2 creatures is not ready to mate
+			if !target.is_normal_state():
+				target = null; continue
 				
-				if !(mating_urge >= 100 and target.mating_urge >= 100):
-					target = null; continue
+			if !(mating_urge >= 100 and target.mating_urge >= 100):
+				target = null; continue
 				
-				current_state = "mate"; continue
+			current_state = "mate"; continue
 			
+		# Area belongs to the species' predator group
+		if area.is_in_group(predator_group):
+			threat = area.get_parent()
+			current_state = "escape"; continue
+		
 		# Area belongs to the species' food group
 		elif area.is_in_group(food_group.to_lower()):
 			target = area.get_parent()
@@ -150,3 +157,12 @@ func _on_hunger_timer_timeout() -> void:
 		
 	else:
 		mating_urge += 1
+
+
+func _on_vision_area_exited(area: Area2D) -> void:
+	if !area.get_parent().is_in_group(predator_group):
+		return
+
+	if current_state == "escape" and threat != null:	
+		threat.current_state = "idle"
+		current_state = "wander"; threat = null

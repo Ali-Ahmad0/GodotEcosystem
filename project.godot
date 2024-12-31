@@ -34,3 +34,9 @@ project/assembly_name="Ecosystem"
 prey=""
 predator=""
 foliage=""
+
+[layer_names]
+
+2d_physics/layer_1="Wolf"
+2d_physics/layer_2="Stag"
+2d_physics/layer_3="Grass"

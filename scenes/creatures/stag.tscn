@@ -1,4 +1,4 @@
-[gd_scene load_steps=185 format=3 uid="uid://cadankj8ip6yo"]
+[gd_scene load_steps=186 format=3 uid="uid://cadankj8ip6yo"]
 
 [ext_resource type="Texture2D" uid="uid://bhnrl2gryq4k0" path="res://assets/sprites/stag/critter_stag_NE_idle.png" id="1_ikrob"]
 [ext_resource type="PackedScene" uid="uid://8f67uvyca4xh" path="res://scenes/creatures/creature.tscn" id="1_ksg36"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://dys6ey7r0ri1s" path="res://assets/sprites/stag/critter_stag_SE_walk.png" id="11_pg2qv"]
 [ext_resource type="Texture2D" uid="uid://c52wb2n8jl615" path="res://assets/sprites/stag/critter_stag_SW_walk.png" id="12_w0a5t"]
 [ext_resource type="Script" path="res://src/creature/target.gd" id="14_6ob3q"]
+[ext_resource type="Script" path="res://src/creature/escape.gd" id="14_4815g"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ph3nv"]
 atlas = ExtResource("1_ikrob")
@@ -1288,6 +1289,12 @@ agent = NodePath("../..")
 animator = NodePath("../../AnimatedSprite2D")
 navigation = NodePath("../../NavigationAgent2D")
 
+[node name="Escape" type="Node" parent="FSM" index="4" node_paths=PackedStringArray("agent", "animator", "navigation")]
+script = ExtResource("14_4815g")
+agent = NodePath("../..")
+animator = NodePath("../../AnimatedSprite2D")
+navigation = NodePath("../../NavigationAgent2D")
+
 [node name="Target" type="Area2D" parent="." index="6" node_paths=PackedStringArray("stats_debug", "state_label", "hunger_label", "mating_label") groups=["prey"]]
 position = Vector2(0, 4)
 collision_layer = 2
@@ -1304,8 +1311,9 @@ debug_color = Color(0.802689, 0.395106, 0.376097, 0.42)
 
 [node name="Vision" parent="." index="8"]
 collision_layer = 2
-collision_mask = 6
+collision_mask = 7
 
 [connection signal="body_entered" from="Target" to="Target" method="_on_body_entered"]
 [connection signal="mouse_entered" from="Target" to="Target" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Target" to="Target" method="_on_mouse_exited"]
+[connection signal="timeout" from="NavigationAgent2D/Timer" to="FSM/Escape" method="_on_timer_timeout"]

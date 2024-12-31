@@ -12,10 +12,12 @@ func _ready() -> void:
 	own_parent = get_parent()
 	stats_debug.hide()
 
+
 func _process(delta: float) -> void:
 	state_label.text = "Current State: " + own_parent.current_state
 	hunger_label.text = "Hunger: " + str(own_parent.hunger)
 	mating_label.text = "Mating Urge: " + str(own_parent.mating_urge) + "%"
+
 
 func _on_body_entered(body: Node2D) -> void:
 	var own_group = own_parent.get_groups()[0]
@@ -54,6 +56,8 @@ func _on_body_entered(body: Node2D) -> void:
 				offspring.global_position = own_parent.global_position + body.global_position 
 				offspring.global_position /= 2
 				
+				own_parent.get_parent().add_child(offspring)
+				
 				# Pass parent genes onto the offspring with mutation
 				var speed_mutation_factor : int = randi_range(-2, 2)
 				var hunger_mutation_factor : int = randi_range(-4, 4)
@@ -73,15 +77,26 @@ func _on_body_entered(body: Node2D) -> void:
 					hunger_mutation_factor
 				)
 				offspring.hunger = offspring.max_hunger
-				own_parent.get_parent().add_child(offspring)
+				
+				offspring.vision_collision.shape.radius = pass_genes(
+					own_parent.vision_collision.shape.radius,
+					body.vision_collision.shape.radius,
+					vision_mutation_factor
+				)
 
 
+# Return combination of parents genes + mutation factor
 func pass_genes(property1, property2, mutation_factor):
-	return property1 + property2 / 2 + mutation_factor
+	var splitting_factor = randf()
+	var result = property1 * splitting_factor + property2 * (1.0 - splitting_factor) + mutation_factor
+	
+	# Round result to 1 decimal place
+	return round(result * 10) / 10.0 
 
 
 func _on_mouse_entered() -> void:
 	stats_debug.show()
+
 
 func _on_mouse_exited() -> void:
 	stats_debug.hide()

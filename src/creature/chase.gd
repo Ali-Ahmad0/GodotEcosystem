@@ -12,13 +12,6 @@ func enter() -> void:
 	animate()
 	
 func update(delta : float) -> void:
-	# Navigate to the target
-	direction = (navigation.get_next_path_position() - agent.global_position).normalized()
-	agent.velocity = direction * agent.speed
-	
-	animate()
-	agent.move_and_slide()
-	
 	if !agent.target:
 		agent.current_state = "idle"
 	
@@ -30,6 +23,14 @@ func update(delta : float) -> void:
 	# Exit the state
 	if agent.current_state != self.name.to_lower():
 		emit_signal("state_transition", self, agent.current_state)
+	
+	# Navigate to the target
+	direction = (navigation.get_next_path_position() - agent.global_position).normalized()
+	agent.velocity = direction * agent.speed
+	
+	animate()
+	agent.move_and_slide()
+	
 
 func leave() -> void:
 	# Replenish creature hunger

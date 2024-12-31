@@ -103,3 +103,4 @@ debug_color = Color(0.0400905, 0.624165, 0.52247, 0.42)
 [connection signal="timeout" from="NavigationAgent2D/Timer" to="FSM/Chase" method="_on_timer_timeout"]
 [connection signal="timeout" from="NavigationAgent2D/Timer" to="FSM/Mate" method="_on_timer_timeout"]
 [connection signal="area_entered" from="Vision" to="." method="_on_vision_area_entered"]
+[connection signal="area_exited" from="Vision" to="." method="_on_vision_area_exited"]
