@@ -24,9 +24,10 @@ func _on_body_entered(body: Node2D) -> void:
 	
 	# Stag has now been eaten
 	if own_group == "prey" and body.is_in_group("predator"):
-		body.current_state = "idle"
-		body.target = null
-		get_parent().queue_free()
+		if body.target == own_parent:
+			body.current_state = "idle"
+			body.target = null
+			get_parent().queue_free()
 	
 	# Creature has found suitable mate
 	if body.is_in_group(own_group) and body.current_state == "mate":

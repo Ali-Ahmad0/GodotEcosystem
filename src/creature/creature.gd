@@ -113,8 +113,10 @@ func handle_vision() -> void:
 		
 		# Area belongs to the species' food group
 		elif area.is_in_group(food_group.to_lower()):
-			target = area.get_parent()
-			current_state = "chase"; continue
+			# Chase after food if sufficiently hungry
+			if hunger / max_hunger < 0.7:
+				target = area.get_parent()
+				current_state = "chase"; continue
 
 
 func _on_state_timer_timeout() -> void:
