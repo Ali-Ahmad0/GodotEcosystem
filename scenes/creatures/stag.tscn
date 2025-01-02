@@ -1261,6 +1261,9 @@ radius = 12.0
 [node name="Stag" groups=["prey"] instance=ExtResource("1_ksg36")]
 collision_layer = 2
 collision_mask = 4
+hunger_lower_bound = 80
+hunger_upper_bound = 120
+hunger_eat_factor = 0.7
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="0"]
 sprite_frames = SubResource("SpriteFrames_7y1ei")

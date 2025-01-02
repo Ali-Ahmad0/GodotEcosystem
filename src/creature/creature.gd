@@ -4,17 +4,30 @@ extends CharacterBody2D
 # Properties
 var speed : float
 var max_hunger : float
-
+var hunger : float
 var mating_urge : float
 
+# Initial facing direction
 @export var facing : String
 
+# The range in which max_hunger can lie
+@export var hunger_lower_bound : int
+@export var hunger_upper_bound : int
+
+# A ratio of hunger : max_hunger
+# At which the animal would eat
+@export var hunger_eat_factor : float
+
+# Scene variables
 @onready var state_timer : Timer = $StateTimer
 @onready var target_collision : CollisionShape2D = $Target/CollisionShape2D
 @onready var vision : Area2D = $Vision
 @onready var vision_collision : CollisionShape2D = $Vision/CollisionShape2D
 
+# Name of group which species eats
 var food_group : String = ""
+
+# Name of group which eats species
 var predator_group : String = ""
 
 # Facing direction
@@ -27,15 +40,18 @@ var current_state = "idle"
 var target : Node2D = null
 var threat : Node2D = null
 
-var hunger : float
-
 
 func _ready() -> void:
 	mating_urge = 0
 	
-	# Initialize the properties randomly
-	max_hunger = randi_range(80, 120)
+	# Initialize hunger randomly
+	max_hunger = randi_range(
+		hunger_lower_bound, 
+		hunger_upper_bound
+	)
 	hunger = max_hunger
+	
+	# Initialize speed randomly
 	speed = randi_range(20, 40)
 	
 	# Initialize random vision radius
@@ -114,7 +130,7 @@ func handle_vision() -> void:
 		# Area belongs to the species' food group
 		elif area.is_in_group(food_group.to_lower()):
 			# Chase after food if sufficiently hungry
-			if hunger / max_hunger < 0.7:
+			if hunger / max_hunger < hunger_eat_factor:
 				target = area.get_parent()
 				current_state = "chase"; continue
 
@@ -165,6 +181,6 @@ func _on_vision_area_exited(area: Area2D) -> void:
 	if !area.get_parent().is_in_group(predator_group):
 		return
 
-	if current_state == "escape" and threat != null:	
+	if current_state == "escape" and threat != null:
 		threat.current_state = "idle"
 		current_state = "wander"; threat = null

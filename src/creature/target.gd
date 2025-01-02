@@ -16,7 +16,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	state_label.text = "Current State: " + own_parent.current_state
 	hunger_label.text = "Hunger: " + str(own_parent.hunger)
-	mating_label.text = "Mating Urge: " + str(own_parent.mating_urge) + "%"
+	mating_label.text = "Mating %age: " + str(own_parent.mating_urge) + "%"
 
 
 func _on_body_entered(body: Node2D) -> void:

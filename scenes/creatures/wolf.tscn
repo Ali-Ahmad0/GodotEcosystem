@@ -389,6 +389,9 @@ radius = 12.0
 
 [node name="Wolf" groups=["predator"] instance=ExtResource("1_recoa")]
 collision_mask = 0
+hunger_lower_bound = 120
+hunger_upper_bound = 180
+hunger_eat_factor = 0.8
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="0" groups=["predator"]]
 sprite_frames = SubResource("SpriteFrames_67xkm")

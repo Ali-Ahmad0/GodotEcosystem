@@ -12,11 +12,12 @@ func enter() -> void:
 	animate()
 	
 func update(delta : float) -> void:
+	# Target has already died
 	if !agent.target:
 		agent.current_state = "idle"
 	
-	# Target has already been eaten
-	if agent.target:
+	# Target (grass) has already been eaten
+	if agent.target and agent.target.is_in_group("foliage"):
 		if agent.target.target_collision.disabled:
 			agent.current_state = "idle"
 	
