@@ -1,76 +1,20 @@
 [gd_scene load_steps=7 format=4 uid="uid://bxdoh4okpr445"]
 
 [ext_resource type="PackedScene" uid="uid://0vrd28vnd68c" path="res://scenes/world/tilemap.tscn" id="1_e2sem"]
-[ext_resource type="Script" path="res://src/world/camera.gd" id="1_f86x4"]
-[ext_resource type="FontFile" uid="uid://hjmyblnt7bki" path="res://assets/fonts/Abaddon Bold.ttf" id="1_rgwic"]
 [ext_resource type="Script" path="res://src/world/world.gd" id="1_w36o7"]
+[ext_resource type="PackedScene" uid="uid://c4ts2r3kqhb44" path="res://scenes/world/global_stats.tscn" id="2_m8gcp"]
+[ext_resource type="PackedScene" uid="uid://dnds5bt73dwv8" path="res://scenes/world/world_camera.tscn" id="3_1kedx"]
 [ext_resource type="PackedScene" uid="uid://cadankj8ip6yo" path="res://scenes/creatures/stag.tscn" id="3_7htvl"]
 [ext_resource type="PackedScene" uid="uid://baot6ig6tr88h" path="res://scenes/world/grass.tscn" id="3_rx8pq"]
 
 [node name="Debug" type="Node2D"]
 texture_filter = 1
+position = Vector2(0, -1)
 script = ExtResource("1_w36o7")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" parent="." instance=ExtResource("2_m8gcp")]
 
-[node name="GlobalStats" type="Control" parent="CanvasLayer"]
-visible = false
-texture_filter = 1
-layout_mode = 3
-anchors_preset = 0
-offset_top = 4.0
-offset_right = 128.0
-offset_bottom = 54.0
-mouse_filter = 2
-
-[node name="Total" type="Label" parent="CanvasLayer/GlobalStats"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 18.0
-grow_horizontal = 2
-theme_override_fonts/font = ExtResource("1_rgwic")
-text = " Total Count:"
-
-[node name="Stags" type="Label" parent="CanvasLayer/GlobalStats"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 18.0
-offset_bottom = 36.0
-grow_horizontal = 2
-theme_override_fonts/font = ExtResource("1_rgwic")
-text = " Stag Count:"
-
-[node name="Wolfs" type="Label" parent="CanvasLayer/GlobalStats"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 36.0
-offset_bottom = 54.0
-grow_horizontal = 2
-theme_override_fonts/font = ExtResource("1_rgwic")
-text = " Wolves Count:"
-
-[node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2(320, 240)
-script = ExtResource("1_f86x4")
-
-[node name="ColorRect" type="ColorRect" parent="Camera2D"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -1.0
-offset_right = 640.0
-offset_bottom = 479.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0, 0, 0, 0)
-
-[node name="Timer" type="Timer" parent="Camera2D"]
-wait_time = 0.25
-one_shot = true
+[node name="Camera2D" parent="." instance=ExtResource("3_1kedx")]
 
 [node name="Tilemap" parent="." instance=ExtResource("1_e2sem")]
 

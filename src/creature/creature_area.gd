@@ -16,7 +16,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	state_label.text = "Current State: " + own_parent.current_state
 	hunger_label.text = "Hunger: " + str(own_parent.hunger)
-	mating_label.text = "Mating %age: " + str(own_parent.mating_urge) + "%"
+	mating_label.text = "Mating %age: " + str(own_parent.mating_percentage) + "%"
 
 
 func _on_body_entered(body: Node2D) -> void:
@@ -35,12 +35,12 @@ func _on_body_entered(body: Node2D) -> void:
 			# Reset own state and mating urge
 			own_parent.current_state = "idle"
 			own_parent.target = null
-			own_parent.mating_urge = 0
+			own_parent.mating_percentage = 0
 			
 			# Reset other state and mating urge
 			body.current_state = "idle"
 			body.target = null
-			body.mating_urge = 0
+			body.mating_percentage = 0
 			
 			# Preload the creature scene for creating a new instance
 			var creature_type : String = own_parent.get_groups()[0]

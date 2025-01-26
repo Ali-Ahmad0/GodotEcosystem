@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cop2yxbtq48xm" path="res://assets/sprites/wolf/wolf-idle.png" id="1_0f1n1"]
 [ext_resource type="PackedScene" uid="uid://8f67uvyca4xh" path="res://scenes/creatures/creature.tscn" id="1_recoa"]
 [ext_resource type="Texture2D" uid="uid://b050e6gkver04" path="res://assets/sprites/wolf/wolf-run.png" id="2_j46el"]
-[ext_resource type="Script" path="res://src/creature/target.gd" id="4_4gw3h"]
+[ext_resource type="Script" path="res://src/creature/creature_area.gd" id="4_4gw3h"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fnokr"]
 atlas = ExtResource("1_0f1n1")

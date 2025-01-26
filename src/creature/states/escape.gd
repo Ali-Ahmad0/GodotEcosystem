@@ -17,7 +17,6 @@ func update(delta: float) -> void:
 	if !agent.threat:
 		agent.current_state = "wander"
 	
-	
 	# Exit the state
 	if agent.current_state != self.name.to_lower():
 		emit_signal("state_transition", self, agent.current_state)

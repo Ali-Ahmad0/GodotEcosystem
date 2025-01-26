@@ -28,6 +28,11 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("ui_cancel"):
 		debug_display.visible = !debug_display.visible
+
+	# Display overall fitness for the environment
+	if Input.is_action_just_pressed("ui_accept"):
+		print("Stag Fitness: " + str(fitness(stags_group)))
+		print("Wolf Fitness: " + str(fitness(wolfs_group)))
 	
 	# Display some debug data for the world
 	var stags_count : int = stags_group.get_child_count()
@@ -38,3 +43,12 @@ func _process(delta: float) -> void:
 	debug_display.get_child(0).text = "Total Count: " + str(total_count)
 	debug_display.get_child(1).text = "Stags Count: " + str(stags_count)
 	debug_display.get_child(2).text = "Wolves Count: " + str(wolfs_count)
+
+
+# Fitness calculation function
+func fitness(group : Node2D) -> float:
+	var fitness_value : float = 0
+	for creature : Creature in group.get_children():
+		fitness_value += creature.speed + creature.max_hunger + creature.vision_collision.shape.radius
+	
+	return round(fitness_value / group.get_child_count())

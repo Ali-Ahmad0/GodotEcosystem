@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4ts2r3kqhb44"]
+
+[ext_resource type="FontFile" uid="uid://hjmyblnt7bki" path="res://assets/fonts/Abaddon Bold.ttf" id="1_3csgl"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="GlobalStats" type="Control" parent="."]
+visible = false
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 0
+offset_top = 4.0
+offset_right = 128.0
+offset_bottom = 54.0
+mouse_filter = 2
+
+[node name="Total" type="Label" parent="GlobalStats"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 18.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_3csgl")
+text = " Total Count:"
+
+[node name="Stags" type="Label" parent="GlobalStats"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 18.0
+offset_bottom = 36.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_3csgl")
+text = " Stag Count:"
+
+[node name="Wolfs" type="Label" parent="GlobalStats"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 36.0
+offset_bottom = 54.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_3csgl")
+text = " Wolves Count:"

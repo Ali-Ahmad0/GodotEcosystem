@@ -3,10 +3,10 @@
 [ext_resource type="Script" path="res://src/creature/creature.gd" id="1_raejy"]
 [ext_resource type="Script" path="res://src/fsm/fsm.gd" id="2_lgpwl"]
 [ext_resource type="FontFile" uid="uid://hjmyblnt7bki" path="res://assets/fonts/Abaddon Bold.ttf" id="2_wv8oy"]
-[ext_resource type="Script" path="res://src/creature/idle.gd" id="3_71s5r"]
-[ext_resource type="Script" path="res://src/creature/wander.gd" id="4_be54a"]
-[ext_resource type="Script" path="res://src/creature/chase.gd" id="5_ykpoe"]
-[ext_resource type="Script" path="res://src/creature/mate.gd" id="6_d01by"]
+[ext_resource type="Script" path="res://src/creature/states/idle.gd" id="3_71s5r"]
+[ext_resource type="Script" path="res://src/creature/states/wander.gd" id="4_be54a"]
+[ext_resource type="Script" path="res://src/creature/states/chase.gd" id="5_ykpoe"]
+[ext_resource type="Script" path="res://src/creature/states/mate.gd" id="6_d01by"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fcg34"]
 radius = 6.0

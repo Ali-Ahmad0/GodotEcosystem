@@ -13,8 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://drs2r8au2adg1" path="res://assets/sprites/stag/critter_stag_NW_walk.png" id="10_408dv"]
 [ext_resource type="Texture2D" uid="uid://dys6ey7r0ri1s" path="res://assets/sprites/stag/critter_stag_SE_walk.png" id="11_pg2qv"]
 [ext_resource type="Texture2D" uid="uid://c52wb2n8jl615" path="res://assets/sprites/stag/critter_stag_SW_walk.png" id="12_w0a5t"]
-[ext_resource type="Script" path="res://src/creature/target.gd" id="14_6ob3q"]
-[ext_resource type="Script" path="res://src/creature/escape.gd" id="14_4815g"]
+[ext_resource type="Script" path="res://src/creature/creature_area.gd" id="14_6ob3q"]
+[ext_resource type="Script" path="res://src/creature/states/escape.gd" id="14_4815g"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ph3nv"]
 atlas = ExtResource("1_ikrob")

@@ -5,7 +5,7 @@ extends CharacterBody2D
 var speed : float
 var max_hunger : float
 var hunger : float
-var mating_urge : float
+var mating_percentage : float
 
 # Initial facing direction
 @export var facing : String
@@ -42,7 +42,7 @@ var threat : Node2D = null
 
 
 func _ready() -> void:
-	mating_urge = 0
+	mating_percentage = 0
 	
 	# Initialize hunger randomly
 	max_hunger = randi_range(
@@ -89,7 +89,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	hunger = clamp(hunger, 0, max_hunger)
-	mating_urge = clamp(mating_urge, 0, 100)
+	mating_percentage = clamp(mating_percentage, 0, 100)
 
 	# Die when hunger reaches 0
 	if hunger <= 0:
@@ -117,7 +117,7 @@ func handle_vision() -> void:
 			if !target.is_normal_state():
 				target = null; continue
 				
-			if !(mating_urge >= 100 and target.mating_urge >= 100):
+			if !(mating_percentage >= 100 and target.mating_percentage >= 100):
 				target = null; continue
 				
 			current_state = "mate"; continue
@@ -165,16 +165,16 @@ func _on_hunger_timer_timeout() -> void:
 	# Decrement hunger based on activity
 	hunger -= 1 if current_state == "idle" else 1.5
 	
-	# Randomly increment one's mating urge
+	# Randomly increment one's mating %age
 	var rand_val : float = randf()
 	if rand_val < 0.4:
-		mating_urge += 0.5
+		mating_percentage += 0.5
 		
 	elif rand_val > 0.8:
-		mating_urge += 1.5
+		mating_percentage += 1.5
 		
 	else:
-		mating_urge += 1
+		mating_percentage += 1
 
 
 func _on_vision_area_exited(area: Area2D) -> void:
